@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg: #fafafa;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+  --color-text: #1a1a2e;
+  --color-muted: #6b7280;
+  --color-primary: #00ad9f;
+}
+
+body {
+  @apply min-h-screen font-sans text-[var(--color-text)] antialiased;
+  background: linear-gradient(180deg, #f8fafc 0%, #fafafa 100%);
+}

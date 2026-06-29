@@ -1,0 +1,583 @@
+{
+  "banks": [
+    {
+      "id": "core",
+      "name": "Grammar · Vocabulary · General Knowledge",
+      "categories": ["grammar", "vocabulary", "general_knowledge"]
+    },
+    {
+      "id": "literacy",
+      "name": "Spelling · Sentence Completion",
+      "categories": ["spelling", "sentence_completion"]
+    }
+  ],
+  "categories": {
+    "grammar": { "label": "Grammar", "color": "violet" },
+    "vocabulary": { "label": "Vocabulary", "color": "teal" },
+    "general_knowledge": { "label": "General Knowledge", "color": "sky" },
+    "spelling": { "label": "Spelling", "color": "amber" },
+    "sentence_completion": { "label": "Sentence Completion", "color": "rose" }
+  },
+  "rounds": {
+    "easy": { "label": "Easy", "roundVote": "round1", "target": 20 },
+    "medium": { "label": "Medium", "roundVote": "round2", "target": 15 },
+    "difficult": { "label": "Difficult", "roundVote": "round3", "target": 10 }
+  },
+  "questions": [
+    {
+      "bank": "core",
+      "sourceRound": "easy",
+      "category": "grammar",
+      "text": "Which word is a noun in this sentence: \"The dog barked loudly.\"",
+      "answerKey": "dog"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "easy",
+      "category": "grammar",
+      "text": "Choose the correct sentence:",
+      "options": ["She go to school.", "She goes to school."],
+      "answerKey": "b"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "easy",
+      "category": "grammar",
+      "text": "What is the past tense of play?",
+      "answerKey": "played"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "easy",
+      "category": "grammar",
+      "text": "Fill in the blank: I ___ happy today.",
+      "options": ["am", "are"],
+      "answerKey": "a"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "easy",
+      "category": "grammar",
+      "text": "Which punctuation mark ends a question?",
+      "answerKey": "question mark (?)"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "easy",
+      "category": "vocabulary",
+      "text": "What is the opposite of hot?",
+      "answerKey": "cold"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "easy",
+      "category": "vocabulary",
+      "text": "What does tiny mean?",
+      "answerKey": "very small"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "easy",
+      "category": "vocabulary",
+      "text": "Which word means \"a place where books are kept\"?",
+      "answerKey": "library"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "easy",
+      "category": "vocabulary",
+      "text": "What is a synonym for happy?",
+      "answerKey": "joyful / glad"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "easy",
+      "category": "vocabulary",
+      "text": "What does brave mean?",
+      "answerKey": "showing courage"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "easy",
+      "category": "general_knowledge",
+      "text": "How many days are there in a week?",
+      "answerKey": "7"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "easy",
+      "category": "general_knowledge",
+      "text": "What planet do we live on?",
+      "answerKey": "Earth"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "easy",
+      "category": "general_knowledge",
+      "text": "What color do you get when you mix red and blue?",
+      "answerKey": "purple"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "easy",
+      "category": "general_knowledge",
+      "text": "Which animal is known as the \"King of the Jungle\"?",
+      "answerKey": "lion"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "easy",
+      "category": "general_knowledge",
+      "text": "How many months are there in a year?",
+      "answerKey": "12"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "medium",
+      "category": "grammar",
+      "text": "Identify the adjective in this sentence: \"The beautiful garden attracted visitors.\"",
+      "answerKey": "beautiful"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "medium",
+      "category": "grammar",
+      "text": "Choose the correct form: Neither of the boys ___ present.",
+      "options": ["were", "was"],
+      "answerKey": "b"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "medium",
+      "category": "grammar",
+      "text": "Rewrite in passive voice: \"The chef prepared the meal.\"",
+      "answerKey": "The meal was prepared by the chef."
+    },
+    {
+      "bank": "core",
+      "sourceRound": "medium",
+      "category": "grammar",
+      "text": "What type of sentence is this: \"Please close the door.\"",
+      "answerKey": "imperative"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "medium",
+      "category": "grammar",
+      "text": "Fill in the blank: If I ___ enough money, I would travel the world.",
+      "options": ["have", "had"],
+      "answerKey": "b"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "medium",
+      "category": "vocabulary",
+      "text": "What is a synonym for ancient?",
+      "answerKey": "old / antique"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "medium",
+      "category": "vocabulary",
+      "text": "What does reluctant mean?",
+      "answerKey": "unwilling or hesitant"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "medium",
+      "category": "vocabulary",
+      "text": "Choose the correct meaning of abundant:",
+      "options": ["Scarce", "Plenty", "Dangerous"],
+      "answerKey": "b"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "medium",
+      "category": "vocabulary",
+      "text": "What is the antonym of expand?",
+      "answerKey": "contract / shrink"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "medium",
+      "category": "vocabulary",
+      "text": "Use fortunate in a sentence.",
+      "answerKey": "answers may vary"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "medium",
+      "category": "general_knowledge",
+      "text": "What is the capital of Australia?",
+      "answerKey": "Canberra"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "medium",
+      "category": "general_knowledge",
+      "text": "Which gas do plants absorb from the atmosphere?",
+      "answerKey": "carbon dioxide"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "medium",
+      "category": "general_knowledge",
+      "text": "Who wrote Romeo and Juliet?",
+      "answerKey": "William Shakespeare"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "medium",
+      "category": "general_knowledge",
+      "text": "Which continent is the largest by land area?",
+      "answerKey": "Asia"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "medium",
+      "category": "general_knowledge",
+      "text": "What is the chemical symbol for gold?",
+      "answerKey": "Au"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "difficult",
+      "category": "grammar",
+      "text": "Identify the subordinate clause in this sentence: \"Although it was raining, they continued the match.\"",
+      "answerKey": "Although it was raining"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "difficult",
+      "category": "grammar",
+      "text": "Correct the error: \"Each of the students have completed their assignment.\"",
+      "answerKey": "Each of the students has completed their assignment."
+    },
+    {
+      "bank": "core",
+      "sourceRound": "difficult",
+      "category": "grammar",
+      "text": "What is the difference between a gerund and a participle?",
+      "answerKey": "A gerund acts as a noun; a participle acts as an adjective or forms verb tenses."
+    },
+    {
+      "bank": "core",
+      "sourceRound": "difficult",
+      "category": "grammar",
+      "text": "Rewrite using reported speech: She said, \"I have finished the project.\"",
+      "answerKey": "She said that she had finished the project."
+    },
+    {
+      "bank": "core",
+      "sourceRound": "difficult",
+      "category": "grammar",
+      "text": "Identify the figure of speech: \"Time flies when you're having fun.\"",
+      "answerKey": "idiom / metaphorical expression"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "difficult",
+      "category": "vocabulary",
+      "text": "Define ubiquitous.",
+      "answerKey": "present everywhere"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "difficult",
+      "category": "vocabulary",
+      "text": "What is the meaning of ephemeral?",
+      "answerKey": "short-lived"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "difficult",
+      "category": "vocabulary",
+      "text": "Provide a synonym for magnanimous.",
+      "answerKey": "generous"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "difficult",
+      "category": "vocabulary",
+      "text": "What does parsimonious mean?",
+      "answerKey": "excessively frugal / stingy"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "difficult",
+      "category": "vocabulary",
+      "text": "Use cognizant correctly in a sentence.",
+      "answerKey": "answers may vary"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "difficult",
+      "category": "general_knowledge",
+      "text": "Who developed the theory of relativity?",
+      "answerKey": "Albert Einstein"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "difficult",
+      "category": "general_knowledge",
+      "text": "What is the smallest unit of matter that retains the properties of an element?",
+      "answerKey": "atom"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "difficult",
+      "category": "general_knowledge",
+      "text": "In which year did the Apollo 11 Moon Landing occur?",
+      "answerKey": "1969"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "difficult",
+      "category": "general_knowledge",
+      "text": "What is the longest river in the world according to the most commonly accepted measurement?",
+      "answerKey": "Nile River"
+    },
+    {
+      "bank": "core",
+      "sourceRound": "difficult",
+      "category": "general_knowledge",
+      "text": "Which layer of the Earth lies directly beneath the crust?",
+      "answerKey": "mantle"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "easy",
+      "category": "spelling",
+      "text": "Which spelling is correct?",
+      "options": ["Frend", "Friend", "Freind"],
+      "answerKey": "b"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "easy",
+      "category": "spelling",
+      "text": "Fill in the missing letter: Sch__l",
+      "options": ["o", "a", "e"],
+      "answerKey": "a (School)"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "easy",
+      "category": "spelling",
+      "text": "Which word is spelled correctly?",
+      "options": ["Becaus", "Because", "Becouse"],
+      "answerKey": "b"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "easy",
+      "category": "spelling",
+      "text": "Rearrange the letters to form a word: TAC",
+      "answerKey": "CAT"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "easy",
+      "category": "spelling",
+      "text": "Which spelling is correct?",
+      "options": ["Beautiful", "Beautifull", "Beautifal"],
+      "answerKey": "a"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "easy",
+      "category": "sentence_completion",
+      "text": "The sun ___ in the east.",
+      "options": ["rise", "rises", "rising"],
+      "answerKey": "b"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "easy",
+      "category": "sentence_completion",
+      "text": "I like to drink ___ when I am thirsty.",
+      "options": ["water", "chair", "pencil"],
+      "answerKey": "a"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "easy",
+      "category": "sentence_completion",
+      "text": "She ___ to school every day.",
+      "options": ["go", "goes", "going"],
+      "answerKey": "b"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "easy",
+      "category": "sentence_completion",
+      "text": "We played ___ the park yesterday.",
+      "options": ["in", "on", "under"],
+      "answerKey": "a"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "easy",
+      "category": "sentence_completion",
+      "text": "My brother is taller ___ me.",
+      "options": ["then", "than", "that"],
+      "answerKey": "b"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "medium",
+      "category": "spelling",
+      "text": "Which spelling is correct?",
+      "options": ["Necessary", "Necesary", "Neccessary"],
+      "answerKey": "a"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "medium",
+      "category": "spelling",
+      "text": "Fill in the missing letters: Occ___ion",
+      "answerKey": "as (Occasion)"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "medium",
+      "category": "spelling",
+      "text": "Which word is spelled correctly?",
+      "options": ["Separate", "Seperate", "Separate"],
+      "answerKey": "a"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "medium",
+      "category": "spelling",
+      "text": "Rearrange the letters to form a word: RATEC",
+      "answerKey": "CRATE"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "medium",
+      "category": "spelling",
+      "text": "Which spelling is correct?",
+      "options": ["Environment", "Enviroment", "Environmant"],
+      "answerKey": "a"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "medium",
+      "category": "sentence_completion",
+      "text": "If I had studied harder, I ___ the exam.",
+      "options": ["pass", "would have passed", "passed"],
+      "answerKey": "b"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "medium",
+      "category": "sentence_completion",
+      "text": "Neither the teacher nor the students ___ aware of the change.",
+      "options": ["was", "were", "is"],
+      "answerKey": "b"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "medium",
+      "category": "sentence_completion",
+      "text": "The movie was so interesting that I couldn't stop ___ it.",
+      "options": ["watch", "watching", "watched"],
+      "answerKey": "b"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "medium",
+      "category": "sentence_completion",
+      "text": "By the time we arrived, the train ___.",
+      "options": ["leaves", "left", "had left"],
+      "answerKey": "c"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "medium",
+      "category": "sentence_completion",
+      "text": "The manager asked the staff to complete the report ___ Friday.",
+      "options": ["by", "for", "with"],
+      "answerKey": "a"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "difficult",
+      "category": "spelling",
+      "text": "Which spelling is correct?",
+      "options": ["Accommodate", "Acommodate", "Accomodate"],
+      "answerKey": "a"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "difficult",
+      "category": "spelling",
+      "text": "Fill in the missing letters: Consc___nce",
+      "answerKey": "ie (Conscience)"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "difficult",
+      "category": "spelling",
+      "text": "Which word is spelled correctly?",
+      "options": ["Embarrassment", "Embarassment", "Embarrasment"],
+      "answerKey": "a"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "difficult",
+      "category": "spelling",
+      "text": "Rearrange the letters to form a word: MNEMOICN",
+      "answerKey": "MNEMONIC"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "difficult",
+      "category": "spelling",
+      "text": "Which spelling is correct?",
+      "options": ["Entrepreneur", "Entreprenuer", "Enterpreneur"],
+      "answerKey": "a"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "difficult",
+      "category": "sentence_completion",
+      "text": "Hardly had she entered the room when everyone ___ silent.",
+      "options": ["became", "become", "becoming"],
+      "answerKey": "a"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "difficult",
+      "category": "sentence_completion",
+      "text": "Not only ___ the project on time, but it also exceeded expectations.",
+      "options": ["he completed", "did he complete", "he did complete"],
+      "answerKey": "b"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "difficult",
+      "category": "sentence_completion",
+      "text": "Were I the president, I ___ significant reforms.",
+      "options": ["introduce", "would introduce", "introduced"],
+      "answerKey": "b"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "difficult",
+      "category": "sentence_completion",
+      "text": "The scientist's findings were ___ with previous research.",
+      "options": ["consistent", "consistency", "consist"],
+      "answerKey": "a"
+    },
+    {
+      "bank": "literacy",
+      "sourceRound": "difficult",
+      "category": "sentence_completion",
+      "text": "Despite ___ warned repeatedly, he continued to ignore the rules.",
+      "options": ["be", "being", "been"],
+      "answerKey": "b"
+    }
+  ]
+}

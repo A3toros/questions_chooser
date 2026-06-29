@@ -14,7 +14,6 @@ export const CATEGORIES: Record<Category, { label: string; color: string }> = {
   vocabulary: { label: 'Vocabulary', color: 'bg-teal-100 text-teal-800' },
   general_knowledge: { label: 'General Knowledge', color: 'bg-sky-100 text-sky-800' },
   spelling: { label: 'Spelling', color: 'bg-amber-100 text-amber-800' },
-  sentence_completion: { label: 'Sentence Completion', color: 'bg-rose-100 text-rose-800' },
   conversation_completion: { label: 'Conversation', color: 'bg-pink-100 text-pink-800' },
   pronunciation: { label: 'Pronunciation', color: 'bg-indigo-100 text-indigo-800' },
   pop_culture: { label: 'Pop Culture', color: 'bg-orange-100 text-orange-800' },

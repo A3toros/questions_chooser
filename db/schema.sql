@@ -6,7 +6,6 @@ CREATE TYPE question_category AS ENUM (
   'vocabulary',
   'general_knowledge',
   'spelling',
-  'sentence_completion',
   'conversation_completion',
   'pronunciation',
   'pop_culture'

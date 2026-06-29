@@ -5,7 +5,6 @@ export type Category =
   | 'vocabulary'
   | 'general_knowledge'
   | 'spelling'
-  | 'sentence_completion'
   | 'conversation_completion'
   | 'pronunciation'
   | 'pop_culture'

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { CATEGORIES, getBankLabel, showBankBadge } from '../lib/api'
+import { CATEGORIES } from '../lib/api'
 import { cn } from '../lib/cn'
 import { Badge } from './Badge'
 import { Button } from './Button'
@@ -18,7 +18,6 @@ interface QuestionListItemProps {
 
 export function QuestionListItem({ question, index, saving, pendingVote, onVote }: QuestionListItemProps) {
   const cat = CATEGORIES[question.category]
-  const bankLabel = getBankLabel(question.bank)
   const myVote = question.my_vote
 
   return (
@@ -38,9 +37,6 @@ export function QuestionListItem({ question, index, saving, pendingVote, onVote 
         <div className="min-w-0 flex-1">
           <div className="mb-2 flex flex-wrap items-center gap-2">
             <span className="text-xs font-semibold text-gray-400">#{index + 1}</span>
-            {showBankBadge(question.bank) && (
-              <Badge className="bg-gray-100 text-gray-700">{bankLabel}</Badge>
-            )}
             <Badge className={cat.color}>{cat.label}</Badge>
           </div>
           <p className="whitespace-pre-wrap text-base leading-relaxed text-gray-900">{question.content.text}</p>

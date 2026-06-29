@@ -89,7 +89,7 @@ export function ChoosingPage() {
 
         <div className="mb-6">
           <ProgressBar rated={rated} total={total} label={`${catLabel} · ${roundLabel}`} />
-          <p className="mt-2 text-sm text-gray-500">{total} question{total !== 1 ? 's' : ''} · all banks</p>
+          <p className="mt-2 text-sm text-gray-500">{total} question{total !== 1 ? 's' : ''}</p>
         </div>
 
         <div className="mb-4">

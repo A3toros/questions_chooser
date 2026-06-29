@@ -3,9 +3,31 @@ import { CATEGORIES, ROUNDS } from '../lib/api'
 import { Badge } from './Badge'
 import type { LeaderboardRow } from '../types'
 
+const optionLabels = ['A', 'B', 'C', 'D', 'E']
+
 interface Props {
   questions: LeaderboardRow[]
   showAnswers?: boolean
+}
+
+function QuestionCell({ row }: { row: LeaderboardRow }) {
+  const options = row.options ?? row.content?.options
+
+  return (
+    <div className="max-w-md">
+      <p className="whitespace-pre-wrap text-gray-900">{row.text}</p>
+      {options && options.length > 0 && (
+        <ul className="mt-2 space-y-1">
+          {options.map((opt, i) => (
+            <li key={i} className="rounded bg-gray-50 px-2 py-1 text-xs text-gray-600">
+              <span className="mr-1.5 font-medium text-gray-400">{optionLabels[i]}.</span>
+              {opt}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
 }
 
 function RoundSection({
@@ -51,7 +73,9 @@ function RoundSection({
                   className="border-b border-gray-50 last:border-0"
                 >
                   <td className="px-4 py-3 font-medium text-gray-500">{i + 1}</td>
-                  <td className="max-w-xs truncate px-4 py-3 text-gray-900" title={row.text}>{row.text}</td>
+                  <td className="px-4 py-3">
+                    <QuestionCell row={row} />
+                  </td>
                   <td className="px-4 py-3">
                     <Badge className={CATEGORIES[row.category].color}>{CATEGORIES[row.category].label}</Badge>
                   </td>

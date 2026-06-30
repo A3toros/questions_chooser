@@ -10,25 +10,24 @@ export function Layout({ children, onAddQuestions }: { children: React.ReactNode
     { to: '/leaderboard', label: 'Leaderboard' },
   ]
 
+  const navLinkClass = (active: boolean) =>
+    cn(
+      'relative inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg px-3 text-sm font-medium transition-colors',
+      active ? 'text-primary' : 'text-gray-600 hover:bg-gray-100'
+    )
+
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-4">
-          <Link to="/" className="text-xl font-bold text-primary transition-opacity hover:opacity-80">
+      <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/80 backdrop-blur-md pt-[env(safe-area-inset-top)]">
+        <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:py-4">
+          <Link to="/" className="text-lg font-bold text-primary transition-opacity hover:opacity-80 sm:text-xl">
             VocabForm
           </Link>
-          <nav className="flex items-center gap-2">
+          <nav className="flex items-center gap-1 sm:gap-2">
             {links.map(({ to, label }) => {
               const active = pathname === to
               return (
-                <Link
-                  key={to}
-                  to={to}
-                  className={cn(
-                    'relative rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-                    active ? 'text-primary' : 'text-gray-600 hover:bg-gray-100'
-                  )}
-                >
+                <Link key={to} to={to} className={navLinkClass(active)}>
                   {active && (
                     <motion.span
                       layoutId="nav-pill"
@@ -45,15 +44,19 @@ export function Layout({ children, onAddQuestions }: { children: React.ReactNode
                 whileTap={{ scale: 0.97 }}
                 whileHover={{ scale: 1.02 }}
                 onClick={onAddQuestions}
-                className="rounded-lg bg-primary px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-teal-600"
+                aria-label="Add questions"
+                className="inline-flex min-h-11 items-center justify-center rounded-lg bg-primary px-3 text-sm font-medium text-white shadow-sm hover:bg-teal-600 sm:px-4"
               >
-                + Add questions
+                <span className="sm:hidden">+</span>
+                <span className="hidden sm:inline">+ Add questions</span>
               </motion.button>
             )}
           </nav>
         </div>
       </header>
-      <main className="mx-auto max-w-5xl px-4 py-8">{children}</main>
+      <main className="mx-auto max-w-5xl overflow-x-hidden px-4 py-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] sm:py-8">
+        {children}
+      </main>
     </div>
   )
 }

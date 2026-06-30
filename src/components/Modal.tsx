@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect } from 'react'
 import { cn } from '../lib/cn'
 
 interface ModalProps {
@@ -11,11 +12,20 @@ interface ModalProps {
 }
 
 export function Modal({ open, onClose, title, description, children, className }: ModalProps) {
+  useEffect(() => {
+    if (!open) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [open])
+
   return (
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 flex items-end justify-center sm:items-center sm:p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -33,15 +43,18 @@ export function Modal({ open, onClose, title, description, children, className }
             aria-modal="true"
             aria-labelledby="modal-title"
             className={cn(
-              'relative z-10 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl',
+              'relative z-10 max-h-[85vh] w-full overflow-y-auto rounded-t-2xl bg-white p-4 shadow-2xl sm:max-h-[90vh] sm:max-w-lg sm:rounded-2xl sm:p-6',
+              'pb-[max(1rem,env(safe-area-inset-bottom))]',
               className
             )}
-            initial={{ opacity: 0, scale: 0.92, y: 16 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.92, y: 16 }}
-            transition={{ type: 'spring', stiffness: 420, damping: 28 }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 24 }}
+            transition={{ type: 'spring', stiffness: 420, damping: 32 }}
           >
-            <h2 id="modal-title" className="text-xl font-bold text-gray-900">{title}</h2>
+            <h2 id="modal-title" className="text-lg font-bold text-gray-900 sm:text-xl">
+              {title}
+            </h2>
             {description && <p className="mt-1 text-sm text-gray-500">{description}</p>}
             {children}
           </motion.div>

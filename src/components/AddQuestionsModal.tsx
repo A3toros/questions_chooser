@@ -138,9 +138,11 @@ export function AddQuestionsModal({ open, onClose, onSuccess }: Props) {
         </motion.p>
       )}
 
-      <div className="mt-6 flex justify-end gap-3">
-        <Button variant="outline" onClick={onClose} disabled={loading}>Cancel</Button>
-        <Button onClick={handleSubmit} disabled={loading || !parsed.length}>
+      <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+        <Button variant="outline" onClick={onClose} disabled={loading} className="w-full sm:w-auto">
+          Cancel
+        </Button>
+        <Button onClick={handleSubmit} disabled={loading || !parsed.length} className="w-full sm:w-auto">
           {loading ? 'Adding…' : 'Add questions'}
         </Button>
       </div>

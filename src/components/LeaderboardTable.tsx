@@ -10,22 +10,58 @@ interface Props {
   showAnswers?: boolean
 }
 
-function QuestionCell({ row }: { row: LeaderboardRow }) {
+function QuestionCell({ row, compact }: { row: LeaderboardRow; compact?: boolean }) {
   const options = row.options ?? row.content?.options
 
   return (
-    <div className="max-w-md">
-      <p className="whitespace-pre-wrap text-gray-900">{row.text}</p>
+    <div className={compact ? 'min-w-0' : 'max-w-md'}>
+      <p className="whitespace-pre-wrap break-words text-gray-900">{row.text}</p>
       {options && options.length > 0 && (
         <ul className="mt-2 space-y-1">
           {options.map((opt, i) => (
-            <li key={i} className="rounded bg-gray-50 px-2 py-1 text-xs text-gray-600">
+            <li key={i} className="break-words rounded bg-gray-50 px-2 py-1 text-xs text-gray-600">
               <span className="mr-1.5 font-medium text-gray-400">{optionLabels[i]}.</span>
               {opt}
             </li>
           ))}
         </ul>
       )}
+    </div>
+  )
+}
+
+function MobileCard({
+  row,
+  index,
+  showAnswers,
+}: {
+  row: LeaderboardRow
+  index: number
+  showAnswers?: boolean
+}) {
+  return (
+    <div className="border-b border-gray-50 p-4 last:border-0">
+      <div className="flex gap-3">
+        <span className="shrink-0 pt-0.5 text-sm font-semibold text-gray-400">#{index + 1}</span>
+        <div className="min-w-0 flex-1">
+          <QuestionCell row={row} compact />
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <Badge className={CATEGORIES[row.category].color}>{CATEGORIES[row.category].label}</Badge>
+            {showAnswers && (
+              <span className="text-xs text-gray-500">
+                Answer: <strong>{row.answer_key ?? '—'}</strong>
+              </span>
+            )}
+          </div>
+          <div className="mt-2 flex gap-4 text-sm">
+            <span className="font-medium text-emerald-600">👍 {row.likes}</span>
+            <span className="font-medium text-red-500">👎 {row.dislikes}</span>
+            <span className="font-semibold text-gray-700">
+              Net {row.net_score > 0 ? '+' : ''}{row.net_score}
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -45,10 +81,26 @@ function RoundSection({
 
   return (
     <section className="mb-10">
-      <h2 className="mb-4 text-lg font-bold text-gray-900">
-        {title} <span className="text-sm font-normal text-gray-500">({top.length}/{limit} selected)</span>
+      <h2 className="mb-4 text-base font-bold text-gray-900 sm:text-lg">
+        {title}{' '}
+        <span className="text-sm font-normal text-gray-500">
+          ({top.length}/{limit} selected)
+        </span>
       </h2>
-      <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+
+      {/* Mobile: card layout */}
+      <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm md:hidden">
+        {top.length === 0 ? (
+          <p className="px-4 py-8 text-center text-sm text-gray-500">
+            No questions selected yet — start voting!
+          </p>
+        ) : (
+          top.map((row, i) => <MobileCard key={row.id} row={row} index={i} showAnswers={showAnswers} />)
+        )}
+      </div>
+
+      {/* Desktop: table */}
+      <div className="hidden overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm md:block">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-gray-100 bg-gray-50 text-xs uppercase text-gray-500">
             <tr>
@@ -89,7 +141,9 @@ function RoundSection({
           </tbody>
         </table>
         {top.length === 0 && (
-          <p className="px-4 py-8 text-center text-sm text-gray-500">No questions selected yet — start voting!</p>
+          <p className="px-4 py-8 text-center text-sm text-gray-500">
+            No questions selected yet — start voting!
+          </p>
         )}
       </div>
     </section>

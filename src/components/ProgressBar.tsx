@@ -12,9 +12,9 @@ export function ProgressBar({ rated, total, label }: ProgressBarProps) {
   return (
     <div className="w-full">
       {label && (
-        <div className="mb-1.5 flex justify-between text-xs text-gray-500">
-          <span>{label}</span>
-          <span>{rated}/{total} rated ({pct}%)</span>
+        <div className="mb-1.5 flex justify-between gap-2 text-xs text-gray-500">
+          <span className="min-w-0 truncate">{label}</span>
+          <span className="shrink-0">{rated}/{total} rated ({pct}%)</span>
         </div>
       )}
       <div className="h-2 overflow-hidden rounded-full bg-gray-200">

@@ -18,21 +18,18 @@
   to = "/.netlify/functions/:splat"
   status = 200
 
-# SPA — direct /leaderboard, /photos, etc. (production + previews only; not netlify dev)
+# SPA fallback — only when no static file exists (do NOT use force: breaks /assets/*.js)
 [[context.production.redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  force = true
 
 [[context.deploy-preview.redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  force = true
 
 [[context.branch-deploy.redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  force = true

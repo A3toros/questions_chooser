@@ -15,7 +15,7 @@ export function getDb() {
 }
 
 export const ROUND_LIMITS = { easy: 20, medium: 15, difficult: 10 } as const
-export const TIEBREAKER_LIMIT = 5
+export const TIEBREAKER_ROUND_LIMITS = { easy: 1, medium: 1, difficult: 1 } as const
 
 export const corsHeaders = {
   'Access-Control-Allow-Origin': '*',

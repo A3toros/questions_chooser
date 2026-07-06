@@ -10,7 +10,6 @@ export async function getQuestions(params: {
 }) {
   const sql = getDb()
   const { bank, category, difficulty, teacherId, unrated, tiebreaker } = params
-  const tbFilter = tiebreaker === true
 
   return sql`
     SELECT q.id, q.bank, q.category, q.content, q.likes, q.dislikes, q.net_score,
@@ -19,8 +18,12 @@ export async function getQuestions(params: {
     LEFT JOIN ratings r ON r.question_id = q.id AND r.teacher_id = ${teacherId}
     WHERE q.is_active = true
       AND (${bank ?? null}::text IS NULL OR q.bank::text = ${bank ?? null})
-      AND (${tbFilter}::boolean OR ${category ?? null}::text IS NULL OR q.category::text = ${category ?? null})
-      AND (${tbFilter}::boolean OR ${difficulty ?? null}::text IS NULL OR q.content->>'difficulty' = ${difficulty ?? null})
+      AND (
+        ${tiebreaker === true}::boolean
+        OR ${category ?? null}::text IS NULL
+        OR q.category::text = ${category ?? null}
+      )
+      AND (${difficulty ?? null}::text IS NULL OR q.content->>'difficulty' = ${difficulty ?? null})
       AND (
         CASE
           WHEN ${tiebreaker === true}::boolean THEN (q.content->>'isTiebreaker') = 'true'

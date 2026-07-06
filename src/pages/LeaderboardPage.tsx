@@ -7,10 +7,8 @@ import { Layout } from '../components/Layout'
 import { PageTabs } from '../components/PageTabs'
 import { SkeletonTable } from '../components/Skeleton'
 import { Spinner } from '../components/Spinner'
-import { TiebreakerLeaderboardTable } from '../components/TiebreakerLeaderboardTable'
-import { fetchLeaderboard, fetchTiebreakerLeaderboard } from '../lib/api'
+import { fetchLeaderboard, fetchTiebreakerLeaderboard, TIEBREAKER_ROUND_LIMITS } from '../lib/api'
 import type { QuestionPool } from '../types'
-
 export function LeaderboardPage() {
   const [tab, setTab] = useState<QuestionPool>('competition')
   const [showAnswers, setShowAnswers] = useState(false)
@@ -74,13 +72,14 @@ export function LeaderboardPage() {
           <LeaderboardTable questions={competition.data.questions} showAnswers={showAnswers} />
         )}
         {tab === 'tiebreaker' && tiebreaker.data && (
-          <TiebreakerLeaderboardTable
+          <LeaderboardTable
             questions={tiebreaker.data.questions}
-            limit={tiebreaker.data.limit}
             showAnswers={showAnswers}
+            roundLimits={TIEBREAKER_ROUND_LIMITS}
+            hideCategory
+            emptyMessage="No tie breaking questions selected yet — start voting!"
           />
-        )}
-      </motion.div>
+        )}      </motion.div>
     </Layout>
   )
 }

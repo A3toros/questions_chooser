@@ -27,6 +27,9 @@ export const ROUNDS: { id: Difficulty; label: string; color: string }[] = [
   { id: 'difficult', label: 'Round 3 · Hard', color: 'bg-amber-100 text-amber-800' },
 ]
 
+export const ROUND_LIMITS: Record<Difficulty, number> = { easy: 20, medium: 15, difficult: 10 }
+export const TIEBREAKER_ROUND_LIMITS: Record<Difficulty, number> = { easy: 1, medium: 1, difficult: 1 }
+
 /** Banks where the source set label is hidden in the UI */
 const HIDDEN_BANK_BADGES: Bank[] = ['tournament']
 
@@ -120,8 +123,9 @@ export function fetchLeaderboard() {
 
 export function fetchTiebreakerLeaderboard() {
   return request<{
+    rounds: Record<string, Question[]>
     questions: import('../types').LeaderboardRow[]
-    limit: number
+    limits: Record<Difficulty, number>
   }>('/leaderboard?type=tiebreaker')
 }
 

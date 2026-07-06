@@ -29,11 +29,11 @@ export function ChoosingPage() {
 
   const { data, isLoading, error } = useQuery({
     queryKey: isTiebreaker
-      ? ['questions', 'tiebreaker', teacherId]
+      ? ['questions', 'tiebreaker', difficulty, teacherId]
       : ['questions', category, difficulty, teacherId],
     queryFn: () =>
       isTiebreaker
-        ? fetchQuestions({ teacherId, all: true, tiebreaker: true })
+        ? fetchQuestions({ teacherId, all: true, tiebreaker: true, difficulty })
         : fetchQuestions({ category, difficulty, teacherId, all: true, tiebreaker: false }),
   })
 
@@ -45,7 +45,7 @@ export function ChoosingPage() {
     mutationFn: ({ id, vote }: { id: string; vote: Vote }) => submitVote(id, teacherId, vote),
     onSuccess: (result) => {
       const queryKey = isTiebreaker
-        ? ['questions', 'tiebreaker', teacherId]
+        ? ['questions', 'tiebreaker', difficulty, teacherId]
         : ['questions', category, difficulty, teacherId]
       queryClient.setQueryData(queryKey, (old: { questions: typeof questions } | undefined) => {
         if (!old) return old
@@ -82,13 +82,13 @@ export function ChoosingPage() {
 
   const catLabel = CATEGORIES[category].label
   const roundLabel = ROUNDS.find((r) => r.id === difficulty)?.label ?? difficulty
-  const progressLabel = isTiebreaker ? 'Tie breaking' : `${catLabel} · ${roundLabel}`
+  const progressLabel = isTiebreaker ? `Tie breaking · ${roundLabel}` : `${catLabel} · ${roundLabel}`
   const isSaving = savingId !== null
 
   return (
     <Layout onAddQuestions={() => setModalOpen(true)}>
       <motion.div
-        key={isTiebreaker ? 'tiebreaker' : `${category}-${difficulty}`}
+        key={isTiebreaker ? `tiebreaker-${difficulty}` : `${category}-${difficulty}`}
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.25 }}
@@ -111,7 +111,7 @@ export function ChoosingPage() {
           <p className="mt-2 text-sm text-gray-500">{total} question{total !== 1 ? 's' : ''}</p>
         </div>
 
-        {!isTiebreaker && (
+        {!isTiebreaker ? (
           <>
             <div className="mb-4">
               <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">Category</p>
@@ -123,6 +123,11 @@ export function ChoosingPage() {
               <RoundTabs value={difficulty} onChange={setDifficulty} disabled={isSaving} />
             </div>
           </>
+        ) : (
+          <div className="mb-8">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">Round</p>
+            <RoundTabs value={difficulty} onChange={setDifficulty} disabled={isSaving} />
+          </div>
         )}
 
         {error && (

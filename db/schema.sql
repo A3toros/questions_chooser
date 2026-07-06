@@ -53,6 +53,14 @@ CREATE INDEX idx_questions_net_score ON questions (net_score DESC);
 CREATE INDEX idx_questions_is_active ON questions (is_active);
 CREATE INDEX idx_questions_active_bank_cat_diff ON questions (is_active, bank, category, (content->>'difficulty'));
 
+-- Tie breaking: ranked per round via content.isTiebreaker + content.difficulty
+CREATE INDEX idx_questions_tiebreaker_round ON questions ((content->>'difficulty'), net_score DESC)
+  WHERE is_active = true AND (content->>'isTiebreaker') = 'true';
+CREATE INDEX idx_questions_competition_round ON questions ((content->>'difficulty'), net_score DESC)
+  WHERE is_active = true AND COALESCE((content->>'isTiebreaker')::boolean, false) = false;
+CREATE INDEX idx_questions_tiebreaker_lookup ON questions ((content->>'difficulty'))
+  WHERE is_active = true AND (content->>'isTiebreaker') = 'true';
+
 CREATE OR REPLACE FUNCTION refresh_question_scores(p_question_id UUID)
 RETURNS void AS $$
 BEGIN

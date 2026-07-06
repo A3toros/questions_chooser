@@ -1,13 +1,16 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { CATEGORIES, ROUNDS } from '../lib/api'
+import { CATEGORIES, ROUNDS, ROUND_LIMITS } from '../lib/api'
 import { Badge } from './Badge'
-import type { LeaderboardRow } from '../types'
+import type { Difficulty, LeaderboardRow } from '../types'
 
 const optionLabels = ['A', 'B', 'C', 'D', 'E']
 
 interface Props {
   questions: LeaderboardRow[]
   showAnswers?: boolean
+  roundLimits?: Record<Difficulty, number>
+  hideCategory?: boolean
+  emptyMessage?: string
 }
 
 function QuestionCell({ row, compact }: { row: LeaderboardRow; compact?: boolean }) {
@@ -34,10 +37,12 @@ function MobileCard({
   row,
   index,
   showAnswers,
+  hideCategory,
 }: {
   row: LeaderboardRow
   index: number
   showAnswers?: boolean
+  hideCategory?: boolean
 }) {
   return (
     <div className="border-b border-gray-50 p-4 last:border-0">
@@ -46,7 +51,9 @@ function MobileCard({
         <div className="min-w-0 flex-1">
           <QuestionCell row={row} compact />
           <div className="mt-3 flex flex-wrap items-center gap-2">
-            <Badge className={CATEGORIES[row.category].color}>{CATEGORIES[row.category].label}</Badge>
+            {!hideCategory && (
+              <Badge className={CATEGORIES[row.category].color}>{CATEGORIES[row.category].label}</Badge>
+            )}
             {showAnswers && (
               <span className="text-xs text-gray-500">
                 Answer: <strong>{row.answer_key ?? '—'}</strong>
@@ -71,13 +78,18 @@ function RoundSection({
   limit,
   rows,
   showAnswers,
+  hideCategory,
+  emptyMessage,
 }: {
   title: string
   limit: number
   rows: LeaderboardRow[]
   showAnswers?: boolean
+  hideCategory?: boolean
+  emptyMessage?: string
 }) {
   const top = rows.filter((r) => r.selected).slice(0, limit)
+  const empty = emptyMessage ?? 'No questions selected yet — start voting!'
 
   return (
     <section className="mb-10">
@@ -91,11 +103,17 @@ function RoundSection({
       {/* Mobile: card layout */}
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm md:hidden">
         {top.length === 0 ? (
-          <p className="px-4 py-8 text-center text-sm text-gray-500">
-            No questions selected yet — start voting!
-          </p>
+          <p className="px-4 py-8 text-center text-sm text-gray-500">{empty}</p>
         ) : (
-          top.map((row, i) => <MobileCard key={row.id} row={row} index={i} showAnswers={showAnswers} />)
+          top.map((row, i) => (
+            <MobileCard
+              key={row.id}
+              row={row}
+              index={i}
+              showAnswers={showAnswers}
+              hideCategory={hideCategory}
+            />
+          ))
         )}
       </div>
 
@@ -106,7 +124,7 @@ function RoundSection({
             <tr>
               <th className="px-4 py-3">#</th>
               <th className="px-4 py-3">Question</th>
-              <th className="px-4 py-3">Category</th>
+              {!hideCategory && <th className="px-4 py-3">Category</th>}
               <th className="px-4 py-3 text-center">Likes</th>
               <th className="px-4 py-3 text-center">Dislikes</th>
               <th className="px-4 py-3 text-center">Net</th>
@@ -128,9 +146,11 @@ function RoundSection({
                   <td className="px-4 py-3">
                     <QuestionCell row={row} />
                   </td>
-                  <td className="px-4 py-3">
-                    <Badge className={CATEGORIES[row.category].color}>{CATEGORIES[row.category].label}</Badge>
-                  </td>
+                  {!hideCategory && (
+                    <td className="px-4 py-3">
+                      <Badge className={CATEGORIES[row.category].color}>{CATEGORIES[row.category].label}</Badge>
+                    </td>
+                  )}
                   <td className="px-4 py-3 text-center text-emerald-600">{row.likes}</td>
                   <td className="px-4 py-3 text-center text-red-500">{row.dislikes}</td>
                   <td className="px-4 py-3 text-center font-semibold">{row.net_score}</td>
@@ -141,25 +161,50 @@ function RoundSection({
           </tbody>
         </table>
         {top.length === 0 && (
-          <p className="px-4 py-8 text-center text-sm text-gray-500">
-            No questions selected yet — start voting!
-          </p>
+          <p className="px-4 py-8 text-center text-sm text-gray-500">{empty}</p>
         )}
       </div>
     </section>
   )
 }
 
-export function LeaderboardTable({ questions, showAnswers }: Props) {
+export function LeaderboardTable({
+  questions,
+  showAnswers,
+  roundLimits = ROUND_LIMITS,
+  hideCategory,
+  emptyMessage,
+}: Props) {
   const easy = questions.filter((q) => q.difficulty === 'easy')
   const medium = questions.filter((q) => q.difficulty === 'medium')
   const difficult = questions.filter((q) => q.difficulty === 'difficult')
 
   return (
     <div>
-      <RoundSection title={ROUNDS[0].label} limit={20} rows={easy} showAnswers={showAnswers} />
-      <RoundSection title={ROUNDS[1].label} limit={15} rows={medium} showAnswers={showAnswers} />
-      <RoundSection title={ROUNDS[2].label} limit={10} rows={difficult} showAnswers={showAnswers} />
+      <RoundSection
+        title={ROUNDS[0].label}
+        limit={roundLimits.easy}
+        rows={easy}
+        showAnswers={showAnswers}
+        hideCategory={hideCategory}
+        emptyMessage={emptyMessage}
+      />
+      <RoundSection
+        title={ROUNDS[1].label}
+        limit={roundLimits.medium}
+        rows={medium}
+        showAnswers={showAnswers}
+        hideCategory={hideCategory}
+        emptyMessage={emptyMessage}
+      />
+      <RoundSection
+        title={ROUNDS[2].label}
+        limit={roundLimits.difficult}
+        rows={difficult}
+        showAnswers={showAnswers}
+        hideCategory={hideCategory}
+        emptyMessage={emptyMessage}
+      />
     </div>
   )
 }

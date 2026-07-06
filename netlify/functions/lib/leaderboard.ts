@@ -1,4 +1,4 @@
-import { getDb, ROUND_LIMITS, TIEBREAKER_LIMIT } from './db'
+import { getDb, ROUND_LIMITS, TIEBREAKER_ROUND_LIMITS } from './db'
 
 export async function getLeaderboard(bank?: string | null) {
   const sql = getDb()
@@ -48,19 +48,29 @@ export async function getTiebreakerLeaderboard() {
            content->'options' AS options,
            content->>'answerKey' AS answer_key,
            ROW_NUMBER() OVER (
+             PARTITION BY content->>'difficulty'
              ORDER BY net_score DESC, likes DESC
            )::int AS rank
     FROM questions
     WHERE is_active = true
       AND net_score > 0
       AND (content->>'isTiebreaker') = 'true'
-    ORDER BY net_score DESC, likes DESC
+    ORDER BY content->>'difficulty', net_score DESC, likes DESC
   `
 
-  const questions = rows.map((row) => ({
-    ...row,
-    selected: row.rank <= TIEBREAKER_LIMIT,
-  }))
+  const rounds: Record<string, typeof rows> = { easy: [], medium: [], difficult: [] }
+  for (const row of rows) {
+    const d = row.difficulty as keyof typeof TIEBREAKER_ROUND_LIMITS
+    if (d in rounds && rounds[d].length < TIEBREAKER_ROUND_LIMITS[d]) {
+      rounds[d].push({ ...row, selected: true })
+    }
+  }
 
-  return { questions, limit: TIEBREAKER_LIMIT }
+  const questions = rows.map((row) => {
+    const d = row.difficulty as keyof typeof TIEBREAKER_ROUND_LIMITS
+    const limit = TIEBREAKER_ROUND_LIMITS[d] ?? 0
+    return { ...row, selected: row.rank <= limit && row.net_score > 0 }
+  })
+
+  return { rounds, questions, limits: TIEBREAKER_ROUND_LIMITS }
 }

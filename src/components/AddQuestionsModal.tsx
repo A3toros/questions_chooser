@@ -21,6 +21,7 @@ export function AddQuestionsModal({ open, onClose, onSuccess }: Props) {
   const [answerKeys, setAnswerKeys] = useState('')
   const [tieQuestion, setTieQuestion] = useState('')
   const [tieAnswer, setTieAnswer] = useState('')
+  const [tieDifficulty, setTieDifficulty] = useState<Difficulty>('easy')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -77,7 +78,7 @@ export function AddQuestionsModal({ open, onClose, onSuccess }: Props) {
           category: 'general_knowledge',
           content: {
             text: questionText,
-            difficulty: 'easy',
+            difficulty: tieDifficulty,
             answerKey: answer,
             isTiebreaker: true,
           },
@@ -187,6 +188,20 @@ export function AddQuestionsModal({ open, onClose, onSuccess }: Props) {
         </>
       ) : (
         <>
+          <label className="mt-4 block text-sm">
+            <span className="font-medium text-gray-700">Round</span>
+            <select
+              className="mt-1 w-full rounded-lg border border-gray-200 px-3 py-2 disabled:opacity-50"
+              value={tieDifficulty}
+              onChange={(e) => setTieDifficulty(e.target.value as Difficulty)}
+              disabled={loading}
+            >
+              {ROUNDS.map((r) => (
+                <option key={r.id} value={r.id}>{r.label}</option>
+              ))}
+            </select>
+          </label>
+
           <label className="mt-4 block text-sm">
             <span className="font-medium text-gray-700">Question</span>
             <textarea

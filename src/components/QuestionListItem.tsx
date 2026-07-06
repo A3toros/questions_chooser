@@ -17,6 +17,7 @@ interface QuestionListItemProps {
 }
 
 export function QuestionListItem({ question, index, saving, pendingVote, onVote }: QuestionListItemProps) {
+  const isTiebreaker = question.content.isTiebreaker === true
   const cat = CATEGORIES[question.category]
   const myVote = question.my_vote
 
@@ -37,7 +38,11 @@ export function QuestionListItem({ question, index, saving, pendingVote, onVote 
         <div className="min-w-0 flex-1">
           <div className="mb-2 flex flex-wrap items-center gap-2">
             <span className="text-xs font-semibold text-gray-400">#{index + 1}</span>
-            <Badge className={cat.color}>{cat.label}</Badge>
+            {isTiebreaker ? (
+              <Badge className="bg-purple-100 text-purple-800">Tie breaking</Badge>
+            ) : (
+              <Badge className={cat.color}>{cat.label}</Badge>
+            )}
           </div>
           <p className="whitespace-pre-wrap break-words text-base leading-relaxed text-gray-900">
             {question.content.text}

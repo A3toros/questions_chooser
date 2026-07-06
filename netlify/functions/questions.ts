@@ -17,6 +17,7 @@ export const handler: Handler = async (event) => {
           difficulty: p.difficulty ?? null,
           teacherId: p.teacherId ?? null,
           unrated: p.unrated === 'true',
+          tiebreaker: p.tiebreaker === 'true' ? true : p.tiebreaker === 'false' ? false : null,
         }),
         new Promise((_, reject) => setTimeout(() => reject(new Error('Request timeout')), 50000)),
       ])

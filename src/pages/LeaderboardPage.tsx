@@ -4,26 +4,51 @@ import { useState } from 'react'
 import { HowItWorks } from '../components/HowItWorks'
 import { LeaderboardTable } from '../components/LeaderboardTable'
 import { Layout } from '../components/Layout'
+import { PageTabs } from '../components/PageTabs'
 import { SkeletonTable } from '../components/Skeleton'
 import { Spinner } from '../components/Spinner'
-import { fetchLeaderboard } from '../lib/api'
+import { TiebreakerLeaderboardTable } from '../components/TiebreakerLeaderboardTable'
+import { fetchLeaderboard, fetchTiebreakerLeaderboard } from '../lib/api'
+import type { QuestionPool } from '../types'
 
 export function LeaderboardPage() {
+  const [tab, setTab] = useState<QuestionPool>('competition')
   const [showAnswers, setShowAnswers] = useState(false)
 
-  const { data, isLoading, error, refetch, isFetching } = useQuery({
-    queryKey: ['leaderboard'],
+  const competition = useQuery({
+    queryKey: ['leaderboard', 'competition'],
     queryFn: () => fetchLeaderboard(),
+    enabled: tab === 'competition',
   })
+
+  const tiebreaker = useQuery({
+    queryKey: ['leaderboard', 'tiebreaker'],
+    queryFn: () => fetchTiebreakerLeaderboard(),
+    enabled: tab === 'tiebreaker',
+  })
+
+  const active = tab === 'competition' ? competition : tiebreaker
+  const { isLoading, error, refetch, isFetching } = active
 
   return (
     <Layout>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <HowItWorks variant="leaderboard" />
 
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4">
+        <div className="mb-6 flex flex-col gap-4">
           <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">Leaderboard</h1>
-          <div className="flex items-center justify-between gap-4 sm:ml-auto">
+
+          <PageTabs
+            tabs={[
+              { id: 'competition', label: 'Leaderboard' },
+              { id: 'tiebreaker', label: 'Tie breaking' },
+            ]}
+            value={tab}
+            onChange={setTab}
+            layoutId="leaderboard-pool-tab"
+          />
+
+          <div className="flex items-center justify-between gap-4">
             <label className="flex min-h-11 cursor-pointer items-center gap-2 text-sm text-gray-600">
               <input type="checkbox" checked={showAnswers} onChange={(e) => setShowAnswers(e.target.checked)} />
               Show answers
@@ -45,7 +70,16 @@ export function LeaderboardPage() {
             {error.message}
           </motion.p>
         )}
-        {data && <LeaderboardTable questions={data.questions} showAnswers={showAnswers} />}
+        {tab === 'competition' && competition.data && (
+          <LeaderboardTable questions={competition.data.questions} showAnswers={showAnswers} />
+        )}
+        {tab === 'tiebreaker' && tiebreaker.data && (
+          <TiebreakerLeaderboardTable
+            questions={tiebreaker.data.questions}
+            limit={tiebreaker.data.limit}
+            showAnswers={showAnswers}
+          />
+        )}
       </motion.div>
     </Layout>
   )

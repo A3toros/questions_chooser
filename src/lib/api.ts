@@ -76,20 +76,21 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 
 export function fetchQuestions(params: {
   bank?: Bank
-  category: Category
-  difficulty: Difficulty
+  category?: Category
+  difficulty?: Difficulty
   teacherId: string
   unrated?: boolean
   all?: boolean
+  tiebreaker?: boolean
 }) {
-  const q = new URLSearchParams({
-    category: params.category,
-    difficulty: params.difficulty,
-    teacherId: params.teacherId,
-  })
+  const q = new URLSearchParams({ teacherId: params.teacherId })
+  if (params.category) q.set('category', params.category)
+  if (params.difficulty) q.set('difficulty', params.difficulty)
   if (params.bank) q.set('bank', params.bank)
   if (params.unrated) q.set('unrated', 'true')
   if (params.all) q.set('all', 'true')
+  if (params.tiebreaker === true) q.set('tiebreaker', 'true')
+  else if (params.tiebreaker === false) q.set('tiebreaker', 'false')
   return request<{ questions: Question[] }>(`/questions?${q}`)
 }
 
@@ -109,13 +110,19 @@ export function bulkAddQuestions(
   })
 }
 
-export function fetchLeaderboard(bank?: Bank) {
-  const q = bank ? `?bank=${bank}` : ''
+export function fetchLeaderboard() {
   return request<{
     rounds: Record<string, Question[]>
     questions: import('../types').LeaderboardRow[]
     limits: Record<Difficulty, number>
-  }>(`/leaderboard${q}`)
+  }>('/leaderboard')
+}
+
+export function fetchTiebreakerLeaderboard() {
+  return request<{
+    questions: import('../types').LeaderboardRow[]
+    limit: number
+  }>('/leaderboard?type=tiebreaker')
 }
 
 export function parseQuestions(text: string): string[] {

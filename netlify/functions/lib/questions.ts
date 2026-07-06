@@ -6,9 +6,11 @@ export async function getQuestions(params: {
   difficulty?: string | null
   teacherId?: string | null
   unrated?: boolean
+  tiebreaker?: boolean | null
 }) {
   const sql = getDb()
-  const { bank, category, difficulty, teacherId, unrated } = params
+  const { bank, category, difficulty, teacherId, unrated, tiebreaker } = params
+  const tbFilter = tiebreaker === true
 
   return sql`
     SELECT q.id, q.bank, q.category, q.content, q.likes, q.dislikes, q.net_score,
@@ -17,8 +19,15 @@ export async function getQuestions(params: {
     LEFT JOIN ratings r ON r.question_id = q.id AND r.teacher_id = ${teacherId}
     WHERE q.is_active = true
       AND (${bank ?? null}::text IS NULL OR q.bank::text = ${bank ?? null})
-      AND (${category ?? null}::text IS NULL OR q.category::text = ${category ?? null})
-      AND (${difficulty ?? null}::text IS NULL OR q.content->>'difficulty' = ${difficulty ?? null})
+      AND (${tbFilter}::boolean OR ${category ?? null}::text IS NULL OR q.category::text = ${category ?? null})
+      AND (${tbFilter}::boolean OR ${difficulty ?? null}::text IS NULL OR q.content->>'difficulty' = ${difficulty ?? null})
+      AND (
+        CASE
+          WHEN ${tiebreaker === true}::boolean THEN (q.content->>'isTiebreaker') = 'true'
+          WHEN ${tiebreaker === false}::boolean THEN COALESCE((q.content->>'isTiebreaker')::boolean, false) = false
+          ELSE true
+        END
+      )
       AND (${!unrated}::boolean OR ${teacherId ?? null}::text IS NULL OR NOT EXISTS (
         SELECT 1 FROM ratings rx WHERE rx.question_id = q.id AND rx.teacher_id = ${teacherId ?? null}
       ))
@@ -33,6 +42,13 @@ export async function createQuestions(
   const sql = getDb()
   const inserted = []
   for (const q of questions) {
+    const isTb = q.content.isTiebreaker === true
+    if (isTb && !q.content.answerKey) {
+      throw new Error('Tie breaking questions require an answer')
+    }
+    if (isTb && q.content.options) {
+      throw new Error('Tie breaking questions cannot have options')
+    }
     const [row] = await sql`
       INSERT INTO questions (bank, category, content)
       VALUES (${q.bank}, ${q.category}, ${JSON.stringify(q.content)}::jsonb)

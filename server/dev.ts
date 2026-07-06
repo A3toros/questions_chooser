@@ -6,7 +6,7 @@ import 'dotenv/config'
 import { createServer } from 'node:http'
 import { createQuestions, getQuestions } from '../netlify/functions/lib/questions.ts'
 import { submitRating } from '../netlify/functions/lib/ratings.ts'
-import { getLeaderboard } from '../netlify/functions/lib/leaderboard.ts'
+import { getLeaderboard, getTiebreakerLeaderboard } from '../netlify/functions/lib/leaderboard.ts'
 import { corsHeaders, pingDb } from '../netlify/functions/lib/db.ts'
 
 const PORT = 3001
@@ -45,6 +45,12 @@ const server = createServer(async (req, res) => {
         difficulty: url.searchParams.get('difficulty'),
         teacherId: url.searchParams.get('teacherId'),
         unrated: url.searchParams.get('unrated') === 'true',
+        tiebreaker:
+          url.searchParams.get('tiebreaker') === 'true'
+            ? true
+            : url.searchParams.get('tiebreaker') === 'false'
+              ? false
+              : null,
       })
       return send(res, 200, { questions })
     }
@@ -67,7 +73,11 @@ const server = createServer(async (req, res) => {
     }
 
     if (path === '/leaderboard' && req.method === 'GET') {
-      const data = await getLeaderboard(url.searchParams.get('bank'))
+      const type = url.searchParams.get('type') ?? 'competition'
+      const data =
+        type === 'tiebreaker'
+          ? await getTiebreakerLeaderboard()
+          : await getLeaderboard(url.searchParams.get('bank'))
       return send(res, 200, data)
     }
 

@@ -11,6 +11,7 @@ export type Category =
 
 export type Difficulty = 'easy' | 'medium' | 'difficult'
 export type Vote = 'like' | 'dislike'
+export type QuestionPool = 'competition' | 'tiebreaker'
 
 export interface QuestionContent {
   text: string
@@ -19,6 +20,7 @@ export interface QuestionContent {
   answerKey?: string
   number?: number
   isBonus?: boolean
+  isTiebreaker?: boolean
 }
 
 export interface Question {

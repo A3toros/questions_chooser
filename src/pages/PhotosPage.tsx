@@ -8,7 +8,7 @@ import { PhotoUploadButton } from '../components/PhotoUploadButton'
 import { SkeletonCard } from '../components/Skeleton'
 import { Spinner } from '../components/Spinner'
 import { Toast } from '../components/Toast'
-import { deletePhoto, downloadPhoto, listPhotos } from '../lib/photos'
+import { deletePhoto, downloadHorizontalPhotos, downloadPhoto, isHorizontalPhoto, listPhotos } from '../lib/photos'
 import { isSupabaseConfigured } from '../lib/supabase'
 import type { Photo } from '../types'
 
@@ -18,6 +18,7 @@ export function PhotosPage() {
   const [verticalWarning, setVerticalWarning] = useState<{ width: number; height: number } | null>(null)
   const [photoToDelete, setPhotoToDelete] = useState<Photo | null>(null)
   const [downloadingId, setDownloadingId] = useState<string | null>(null)
+  const [downloadingAll, setDownloadingAll] = useState(false)
 
   const { data: photos = [], isLoading, error, refetch } = useQuery({
     queryKey: ['photos'],
@@ -54,6 +55,23 @@ export function PhotosPage() {
     }
   }
 
+  const horizontalCount = photos.filter(isHorizontalPhoto).length
+
+  async function handleDownloadAllHorizontal() {
+    setDownloadingAll(true)
+    try {
+      const count = await downloadHorizontalPhotos(photos)
+      setToast({
+        msg: `Downloaded ${count} horizontal photo${count !== 1 ? 's' : ''} as ZIP`,
+        type: 'success',
+      })
+    } catch (e) {
+      setToast({ msg: e instanceof Error ? e.message : 'Download failed', type: 'error' })
+    } finally {
+      setDownloadingAll(false)
+    }
+  }
+
   return (
     <Layout>
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
@@ -61,10 +79,28 @@ export function PhotosPage() {
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Photos</h1>
             <p className="mt-1 text-sm text-gray-500">
-              Upload any photo. Horizontal is preferred; vertical photos are accepted with a reminder.
+              Horizontal photos are preferred.
             </p>
           </div>
-          <PhotoUploadButton
+          <div className="flex flex-wrap items-center gap-2">
+            {horizontalCount > 0 && (
+              <Button
+                type="button"
+                variant="outline"
+                disabled={downloadingAll}
+                onClick={handleDownloadAllHorizontal}
+              >
+                {downloadingAll ? (
+                  <>
+                    <Spinner size="sm" className="mr-2" />
+                    Preparing…
+                  </>
+                ) : (
+                  `Download all (${horizontalCount})`
+                )}
+              </Button>
+            )}
+            <PhotoUploadButton
             onUploaded={() => {
               queryClient.invalidateQueries({ queryKey: ['photos'] })
               refetch()
@@ -72,7 +108,8 @@ export function PhotosPage() {
             onSuccess={(msg) => setToast({ msg, type: 'success' })}
             onError={(msg) => setToast({ msg, type: 'error' })}
             onVerticalWarning={(width, height) => setVerticalWarning({ width, height })}
-          />
+            />
+          </div>
         </div>
 
         {!isSupabaseConfigured() && (

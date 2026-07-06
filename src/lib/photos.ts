@@ -320,6 +320,36 @@ export async function downloadPhoto(photo: Photo): Promise<void> {
   URL.revokeObjectURL(objectUrl)
 }
 
+export function isHorizontalPhoto(photo: Photo): boolean {
+  return photo.width > photo.height
+}
+
+export async function downloadHorizontalPhotos(photos: Photo[]): Promise<number> {
+  const horizontal = photos.filter(isHorizontalPhoto)
+  if (horizontal.length === 0) throw new Error('No horizontal photos to download')
+
+  const { default: JSZip } = await import('jszip')
+  const zip = new JSZip()
+
+  for (const photo of horizontal) {
+    const res = await fetch(photo.url)
+    if (!res.ok) throw new Error(`Failed to fetch ${photo.storage_path}`)
+    zip.file(photo.storage_path, await res.blob())
+  }
+
+  const zipBlob = await zip.generateAsync({ type: 'blob' })
+  const objectUrl = URL.createObjectURL(zipBlob)
+  const a = document.createElement('a')
+  a.href = objectUrl
+  a.download = `horizontal-photos-${new Date().toISOString().slice(0, 10)}.zip`
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+  URL.revokeObjectURL(objectUrl)
+
+  return horizontal.length
+}
+
 export async function deletePhoto(photo: Photo): Promise<void> {
   if (supabase) {
     const { error } = await supabase.storage.from(PHOTOS_BUCKET).remove([photo.storage_path])

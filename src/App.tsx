@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { ChoosingPage } from './pages/ChoosingPage'
 import { LeaderboardPage } from './pages/LeaderboardPage'
+import { PhotosPage } from './pages/PhotosPage'
 
 export default function App() {
   return (
@@ -8,6 +9,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<ChoosingPage />} />
         <Route path="/leaderboard" element={<LeaderboardPage />} />
+        <Route path="/photos" element={<PhotosPage />} />
       </Routes>
     </BrowserRouter>
   )

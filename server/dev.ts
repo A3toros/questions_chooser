@@ -5,6 +5,7 @@
 import 'dotenv/config'
 import { createServer } from 'node:http'
 import { createQuestions, getQuestions } from '../netlify/functions/lib/questions.ts'
+import { createPhoto, deletePhotoById, getPhotos } from '../netlify/functions/lib/photos.ts'
 import { submitRating } from '../netlify/functions/lib/ratings.ts'
 import { getLeaderboard, getTiebreakerLeaderboard } from '../netlify/functions/lib/leaderboard.ts'
 import { corsHeaders, pingDb } from '../netlify/functions/lib/db.ts'
@@ -79,6 +80,33 @@ const server = createServer(async (req, res) => {
           ? await getTiebreakerLeaderboard()
           : await getLeaderboard(url.searchParams.get('bank'))
       return send(res, 200, data)
+    }
+
+    if (path === '/photos' && req.method === 'GET') {
+      const photos = await getPhotos()
+      return send(res, 200, { photos })
+    }
+
+    if (path === '/photos' && req.method === 'POST') {
+      const body = JSON.parse(await readBody(req))
+      if (body.action === 'delete') {
+        if (!body.id) return send(res, 400, { error: 'id is required' })
+        await deletePhotoById(body.id)
+        return send(res, 200, { ok: true })
+      }
+      const { storagePath, url: photoUrl, width, height, mimeType } = body
+      if (!storagePath || !photoUrl || width == null || height == null) {
+        return send(res, 400, { error: 'storagePath, url, width, and height are required' })
+      }
+      const photo = await createPhoto({ storagePath, url: photoUrl, width, height, mimeType })
+      return send(res, 201, { photo })
+    }
+
+    if (path === '/photos' && req.method === 'DELETE') {
+      const id = url.searchParams.get('id')
+      if (!id) return send(res, 400, { error: 'id is required' })
+      await deletePhotoById(id)
+      return send(res, 200, { ok: true })
     }
 
     send(res, 404, { error: 'Not found' })

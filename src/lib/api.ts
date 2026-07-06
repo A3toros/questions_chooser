@@ -1,4 +1,4 @@
-import type { Bank, Category, Difficulty, Question, QuestionContent, Vote } from '../types'
+import type { Bank, Category, Difficulty, Photo, Question, QuestionContent, Vote } from '../types'
 
 export const BANKS: { id: Bank; label: string }[] = [
   { id: 'core', label: 'Core' },
@@ -127,6 +127,36 @@ export function fetchTiebreakerLeaderboard() {
     questions: import('../types').LeaderboardRow[]
     limits: Record<Difficulty, number>
   }>('/leaderboard?type=tiebreaker')
+}
+
+export function fetchPhotos() {
+  return request<{ photos: Photo[] }>('/photos')
+}
+
+export function savePhotoMetadata(photo: {
+  storagePath: string
+  url: string
+  width: number
+  height: number
+  mimeType?: string | null
+}) {
+  return request<{ photo: Photo }>('/photos', {
+    method: 'POST',
+    body: JSON.stringify({
+      storagePath: photo.storagePath,
+      url: photo.url,
+      width: photo.width,
+      height: photo.height,
+      mimeType: photo.mimeType ?? null,
+    }),
+  })
+}
+
+export function deletePhotoMetadata(id: string) {
+  return request<{ ok: true }>('/photos', {
+    method: 'POST',
+    body: JSON.stringify({ action: 'delete', id }),
+  })
 }
 
 export function parseQuestions(text: string): string[] {

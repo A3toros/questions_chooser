@@ -8,6 +8,7 @@ export function Layout({ children, onAddQuestions }: { children: React.ReactNode
   const links = [
     { to: '/', label: 'Choosing' },
     { to: '/leaderboard', label: 'Leaderboard' },
+    { to: '/photos', label: 'Photos' },
   ]
 
   const navLinkClass = (active: boolean) =>

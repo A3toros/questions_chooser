@@ -61,6 +61,18 @@ CREATE INDEX idx_questions_competition_round ON questions ((content->>'difficult
 CREATE INDEX idx_questions_tiebreaker_lookup ON questions ((content->>'difficulty'))
   WHERE is_active = true AND (content->>'isTiebreaker') = 'true';
 
+CREATE TABLE photos (
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  storage_path TEXT NOT NULL UNIQUE,
+  url          TEXT NOT NULL,
+  width        INT NOT NULL,
+  height       INT NOT NULL,
+  mime_type    TEXT,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX idx_photos_created_at ON photos (created_at DESC);
+
 CREATE OR REPLACE FUNCTION refresh_question_scores(p_question_id UUID)
 RETURNS void AS $$
 BEGIN

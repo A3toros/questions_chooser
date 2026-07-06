@@ -49,3 +49,13 @@ export interface LeaderboardRow {
   rank: number
   selected: boolean
 }
+
+export interface Photo {
+  id: string
+  storage_path: string
+  url: string
+  width: number
+  height: number
+  mime_type: string | null
+  created_at: string
+}

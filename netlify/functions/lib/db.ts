@@ -20,7 +20,7 @@ export const TIEBREAKER_ROUND_LIMITS = { easy: 1, medium: 1, difficult: 1 } as c
 export const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
 }
 
 export async function pingDb(): Promise<boolean> {

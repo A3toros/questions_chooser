@@ -18,10 +18,21 @@
   to = "/.netlify/functions/:splat"
   status = 200
 
-# SPA fallback — production only (in dev this breaks Vite module URLs → MIME errors)
-[[redirects]]
+# SPA — direct /leaderboard, /photos, etc. (production + previews only; not netlify dev)
+[[context.production.redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  force = false
-  conditions = {Environment = ["production"]}
+  force = true
+
+[[context.deploy-preview.redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true
+
+[[context.branch-deploy.redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true
